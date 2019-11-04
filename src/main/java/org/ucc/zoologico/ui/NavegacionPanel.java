@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 public class NavegacionPanel extends JPanel {
 
 	private JButton homeButton;
-	private JButton backButton;
 	private JFrame frameContenedor;
 
 	/**
@@ -32,13 +31,6 @@ public class NavegacionPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.gridx = 1;
 		add(this.homeButton, constraints);
-		
-		this.backButton = new JButton("Atras");
-		GridBagConstraints constraints1 = new GridBagConstraints();
-		constraints1.anchor = GridBagConstraints.WEST;
-		constraints1.gridy = 0;
-		constraints1.gridx = 0;
-		add(this.backButton, constraints1);
 	}
 
 	public void configurarEventos() {

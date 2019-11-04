@@ -64,6 +64,15 @@ public class PrincipalFrame extends MainFrame {
 				registrar.setVisible(true);
 			}
 		});
+		
+		alimentarButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				AlimentarFrame alimentar = new AlimentarFrame();
+				setVisible(false);
+				alimentar.setVisible(true);
+			}
+		});
 	}
 
 }

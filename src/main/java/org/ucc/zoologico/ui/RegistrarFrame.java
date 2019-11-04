@@ -7,6 +7,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -40,6 +42,7 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 	private String[] optionsCaninos = { "Seleccione...", "Zorro", "Lobo" };
 	private JComboBox tipoCombo;
 	private JButton registrarButton;
+	private static final Logger logger = Logger.getLogger(RegistrarFrame.class.getName());
 	// TODO: agregar label y combobox para el genero
 	// TODO: agregar label y inputtext para el color de pelo
 
@@ -166,7 +169,12 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 		registrarButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				registrarAnimal();
+				try {
+					registrarAnimal();
+				} catch (Exception e1) {
+					logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
+					//TODO: mostrar mensaje al usuario
+				}
 			}
 		});
 
@@ -203,7 +211,7 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 		// TODO: remover inputext genero si está agregado
 	}
 
-	public void registrarAnimal() {
+	private void registrarAnimal() throws Exception {
 		String nombre = this.nombreTextField.getText();
 		int peso = Integer.parseInt(this.pesoTextField.getText());
 		int edad = Integer.parseInt(this.edadTextField.getText());
