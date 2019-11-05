@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.ucc.zoologico.Animal;
@@ -22,6 +23,7 @@ import org.ucc.zoologico.Lobo;
 import org.ucc.zoologico.Store;
 import org.ucc.zoologico.Tigre;
 import org.ucc.zoologico.Zorro;
+import org.ucc.zoologico.exception.AnimalExistException;
 import org.ucc.zoologico.validators.NotEmptyValidator;
 import org.ucc.zoologico.validators.WantsValidationStatus;
 
@@ -171,9 +173,9 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					registrarAnimal();
-				} catch (Exception e1) {
+				} catch (AnimalExistException e1) {
 					logger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
-					//TODO: mostrar mensaje al usuario
+					JOptionPane.showMessageDialog(RegistrarFrame.this, e1.getLocalizedMessage());
 				}
 			}
 		});
@@ -211,7 +213,7 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 		// TODO: remover inputext genero si está agregado
 	}
 
-	private void registrarAnimal() throws Exception {
+	private void registrarAnimal() throws AnimalExistException {
 		String nombre = this.nombreTextField.getText();
 		int peso = Integer.parseInt(this.pesoTextField.getText());
 		int edad = Integer.parseInt(this.edadTextField.getText());
