@@ -9,7 +9,7 @@ package org.ucc.zoologico.exception;
  */
 public class AnimalExistException extends Exception {
 
-	private static final long serialVersionUID = -6974986575197718259L;
+	private static final long serialVersionUID = 5073436968068406866L;
 	private String nombre;
 
 	public AnimalExistException(String nombre) {

@@ -3,6 +3,7 @@ package org.ucc.zoologico;
 import java.awt.EventQueue;
 
 import org.ucc.zoologico.ui.PrincipalFrame;
+import org.ucc.zoologico.ui.Recursividad;
 
 public class Main {
 
