@@ -9,10 +9,13 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.management.RuntimeErrorException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.ucc.zoologico.Animal;
 import org.ucc.zoologico.Store;
 import org.ucc.zoologico.ui.table.TablaAnimalesPanel;
 
@@ -20,7 +23,7 @@ import org.ucc.zoologico.ui.table.TablaAnimalesPanel;
  * @author iotec_ceo
  *
  */
-public class AlimentarFrame extends MainFrame {
+public class AlimentarFrame extends MainFrame implements SeleccionAnimal {
 
 	private static final long serialVersionUID = -3857195240482629914L;
 	private NavegacionPanel navegacion;
@@ -28,6 +31,10 @@ public class AlimentarFrame extends MainFrame {
 	private JTextField busquedaTextField;
 	private JButton botonBuscar;
 	private TablaAnimalesPanel tablaAnimales;
+	private JLabel cantidadComidaLabel;
+	private JTextField cantidadComida;
+	private JButton alimentarButton;
+	private Animal animalSeleccionado;
 
 	public AlimentarFrame() {
 		super("Registrar Alimento");
@@ -81,6 +88,34 @@ public class AlimentarFrame extends MainFrame {
 		constraints4.gridwidth = 4;
 		this.getPanel().add(tablaAnimales, constraints4);
 
+		cantidadComidaLabel = new JLabel("Cantidad (gr):");
+		GridBagConstraints constraints5 = new GridBagConstraints();
+		constraints5.anchor = GridBagConstraints.WEST;
+		constraints5.insets = new Insets(10, 10, 10, 10);
+		constraints5.gridx = 0;
+		constraints5.gridy = 4;
+		constraints5.gridwidth = 2;
+		this.getPanel().add(cantidadComidaLabel, constraints5);
+
+		this.cantidadComida = new JTextField();
+		this.cantidadComida.setPreferredSize(new Dimension(200, 20));
+		GridBagConstraints constraints6 = new GridBagConstraints();
+		constraints6.anchor = GridBagConstraints.WEST;
+		constraints6.insets = new Insets(10, 10, 10, 10);
+		constraints6.gridx = 2;
+		constraints6.gridy = 4;
+		constraints6.gridwidth = 2;
+		this.getPanel().add(cantidadComida, constraints6);
+
+		alimentarButton = new JButton("Alimentar");
+		GridBagConstraints constraints7 = new GridBagConstraints();
+		constraints7.anchor = GridBagConstraints.WEST;
+		constraints7.insets = new Insets(10, 10, 10, 10);
+		constraints7.gridx = 0;
+		constraints7.gridy = 5;
+		constraints7.gridwidth = 2;
+		this.getPanel().add(alimentarButton, constraints7);
+
 		ajustarInterfaz();
 	}
 
@@ -94,6 +129,33 @@ public class AlimentarFrame extends MainFrame {
 				}
 			}
 		});
+		alimentarButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// registrar dosis de alimento.
+				if (animalSeleccionado != null) {
+					AlimentarFrame.this.registrarAlimento(animalSeleccionado);
+				} else {
+					JOptionPane.showMessageDialog(AlimentarFrame.this, "Debe seleccionar un animale de la tabla");
+				}
+			}
+		});
+	}
+
+	private void registrarAlimento(Animal animalSeleccionado2) {
+		int dosisComida = Store.getInstance().obtenerDosisDiarias(animalSeleccionado.getNombre());
+		System.out.println("Cantidad de comida: " + dosisComida);
+		String dosis = AlimentarFrame.this.cantidadComida.getText();
+		if (dosisComida == 4) {
+			throw new RuntimeException("NO se permite alimentar más de 4 veces a un animal");
+		}
+		animalSeleccionado.comer(Integer.parseInt(dosis));
+	}
+
+	@Override
+	public void seleccionarAnimal(Animal animal) {
+		System.out.println("animal seleccionado metodo de la interfaz");
+		animalSeleccionado = animal;
 	}
 
 }

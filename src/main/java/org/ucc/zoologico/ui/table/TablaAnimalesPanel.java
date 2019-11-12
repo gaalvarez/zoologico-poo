@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.ucc.zoologico.Animal;
 import org.ucc.zoologico.Store;
+import org.ucc.zoologico.ui.SeleccionAnimal;
 
 /**
  * @author iotec_ceo
@@ -30,6 +31,7 @@ public class TablaAnimalesPanel extends JPanel {
 	private JTable tablaAnimales;
 	private List<Animal> animales;
 	private AnimalesModel model;
+	private Animal animalSeleccionado;
 
 	public TablaAnimalesPanel(JFrame frameContenedor) {
 		super(new GridBagLayout());
@@ -61,8 +63,10 @@ public class TablaAnimalesPanel extends JPanel {
 		tablaAnimales.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				if (!event.getValueIsAdjusting() && tablaAnimales.getSelectedRow() != -1) {
-					Animal animalSeleccionado = model.getAnimalPorIndice(tablaAnimales.getSelectedRow());
-					System.out.println("Selección:" + animalSeleccionado.getNombre());
+					animalSeleccionado = model.getAnimalPorIndice(tablaAnimales.getSelectedRow());
+					if (frameContenedor instanceof SeleccionAnimal) {
+						((SeleccionAnimal) frameContenedor).seleccionarAnimal(animalSeleccionado);
+					}
 				}
 
 			}
@@ -77,6 +81,10 @@ public class TablaAnimalesPanel extends JPanel {
 	private void actualizarTabla(List<Animal> animales) {
 		model.setAnimales(animales);
 		model.fireTableDataChanged();
+	}
+	
+	public Animal getAnimalSeleccionado() {
+		return this.animalSeleccionado;
 	}
 
 }

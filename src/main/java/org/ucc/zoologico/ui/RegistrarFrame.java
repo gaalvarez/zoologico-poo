@@ -40,7 +40,7 @@ public class RegistrarFrame extends MainFrame implements WantsValidationStatus {
 	private String[] optionsFamilia = { "Seleccione...", "Canino", "Felino" };
 	private JComboBox familiaCombo;
 	private JLabel tipoLabel;
-	private String[] optionsFelinos = { "Seleccione...", "Tigre", "Leon" };
+	private String[] optionsFelinos = { "Seleccione...", "Tigre", Constante.TIPO_LEON };
 	private String[] optionsCaninos = { "Seleccione...", "Zorro", "Lobo" };
 	private JComboBox tipoCombo;
 	private JButton registrarButton;

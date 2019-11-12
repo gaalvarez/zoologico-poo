@@ -8,7 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
@@ -16,6 +19,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.ucc.zoologico.exception.AnimalExistException;
+import org.ucc.zoologico.ui.Constante;
 
 public class Store {
 
@@ -143,9 +147,13 @@ public class Store {
 	}
 	
 	private Animal crearAnimal(String nombre, String peso, String edad, String familia, String tipo) {
+		boolean numeric = peso.matches("-?\\d+(\\.\\d+)?");
+		if (!numeric) {
+			throw new IllegalArgumentException("el peso debe ser un valor numerico");
+		}
 		int pesoInt = Integer.parseInt(peso);
-		int edadInt = Integer.parseInt(peso);
-		if (tipo.equals("Leon")) {
+		int edadInt = Integer.parseInt(edad);
+		if (tipo.equals(Constante.TIPO_LEON)) {
 			return new Leon(nombre, familia, pesoInt, edadInt);
 		} else if (tipo.equals("Tigre")) {
 			return new Tigre(nombre, familia, pesoInt, edadInt);
@@ -156,5 +164,28 @@ public class Store {
 		} else {
 			throw new IllegalArgumentException("El tipo no corresponde a un animal del zoologico");
 		}
+	}
+	
+	public int obtenerDosisDiarias(String nombre) {
+		Animal animalBuscado = null;
+		for (Animal animal : animalesRegistrados) {
+			if (animal.getNombre().equals(nombre)) {
+				animalBuscado = animal;
+			}
+		}
+		Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        Date hoyAmanecer = now.getTime();
+		Map<Date, Integer> dosisListado = animalBuscado.getDosisComida();
+		int conteo = 0;
+		for (Map.Entry<Date, Integer> dosis : dosisListado.entrySet()) {
+			Date fecha = dosis.getKey();
+			if (fecha.getTime() >= hoyAmanecer.getTime()) {
+				conteo = conteo + 1;
+			} 
+		}
+		return conteo;
 	}
 }
