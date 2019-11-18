@@ -9,5 +9,5 @@ package org.ucc.zoologico.ui;
  */
 public final class Constante {
 
-	public static final String TIPO_LEON = "leon";
+	public static final String TIPO_LEON = "Leon";
 }
